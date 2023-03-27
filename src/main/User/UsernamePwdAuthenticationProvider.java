@@ -1,4 +1,4 @@
-package main.Security.Config;
+package main.User;
 
 import main.Model.Authorization;
 import main.Repository.AuthenticationRepository;
