@@ -2,6 +2,7 @@ package main.Model;
 
 import jakarta.persistence.*;
 import lombok.*;
+import main.User.User;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
@@ -29,13 +30,17 @@ public class Authorization {
             name = "user_roles",
             joinColumns = @JoinColumn(name = "authId", referencedColumnName = "id"),
             inverseJoinColumns = @JoinColumn(name = "id", referencedColumnName = "id"))
-    private Set<Role> roles;
+    private Set<Role> roles = new HashSet<>();
     @Column(name = "create_date")
     @CreationTimestamp
     private LocalDateTime createDate;
     @Column(name = "last_update_date")
     @UpdateTimestamp
     private LocalDateTime lastUpdateDate;
+
+    public void addRole(String role){
+        getRoles().add(new Role(role));
+    }
 
     public Authorization(@NonNull User uuid, Set<Role> roles) {
         this.uuid = uuid;

@@ -1,7 +1,7 @@
 package main.Controller;
 
-import main.Model.User;
-import main.Repository.UserRepository;
+import main.User.User;
+import main.User.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
