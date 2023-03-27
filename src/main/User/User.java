@@ -1,4 +1,4 @@
-package main.Model;
+package main.User;
 
 import jakarta.persistence.*;
 import lombok.*;

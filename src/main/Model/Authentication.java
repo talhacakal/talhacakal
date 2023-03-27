@@ -2,6 +2,7 @@ package main.Model;
 
 import jakarta.persistence.*;
 import lombok.*;
+import main.User.User;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
@@ -24,7 +25,7 @@ public class Authentication {
     @NonNull
     private User uuid;
     @NonNull
-    private String password;
+        private String password;
     @Column(name = "create_date")
     @CreationTimestamp
     private LocalDateTime createDate;

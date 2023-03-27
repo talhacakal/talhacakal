@@ -2,11 +2,11 @@ package main.Model;
 
 import jakarta.persistence.*;
 import lombok.*;
+import main.User.User;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import java.time.LocalDateTime;
-import java.util.UUID;
 
 @Getter
 @Setter
