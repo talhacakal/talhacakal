@@ -9,6 +9,7 @@ import main.Repository.AuthorizationRepository;
 import main.Repository.RoleRepository;
 import main.User.User;
 import main.User.UserRepository;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -27,7 +28,10 @@ public class LoginController {
     private final RoleRepository roleRepository;
 
     @PostMapping("/register")
-    public ResponseEntity<User> register(@RequestParam String username, @RequestParam String password){
+    public ResponseEntity<Object> register(@RequestParam String username, @RequestParam String password){
+        if (!this.userRepository.findByEmail(username).isEmpty()){
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Already exists.");
+        }
         User user = new User();
         Authentication authentication = new Authentication();
         Authorization authorization = new Authorization();
@@ -35,7 +39,6 @@ public class LoginController {
         String hashPassword = passwordEncoder.encode(password);
         authentication.setPassword(hashPassword);
         user.setEmail(username);
-        user.setProperties("yok bişi kanks sg");
         authorization.getRoles().add(this.roleRepository.findByRole("ROLE_USER").get());
 
         User createdUser = this.userRepository.save(user);

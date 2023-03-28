@@ -27,7 +27,7 @@ public class JWTTokenGeneratorFilter extends OncePerRequestFilter {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         if (authentication != null) {
             SecretKey key = Keys.hmacShaKeyFor(SecurityConstants.JWT_KEY.getBytes(StandardCharsets.UTF_8));
-            String jwt = Jwts.builder().setIssuer("Talha Çakal").setSubject("Jwt Token")
+            String jwt = Jwts.builder()
                     .claim("username", authentication.getName())
                     .claim("authorities", populateAuthorities(authentication.getAuthorities()))
                     .setIssuedAt(new Date())
@@ -40,7 +40,6 @@ public class JWTTokenGeneratorFilter extends OncePerRequestFilter {
             response.setContentType(APPLICATION_JSON_VALUE);
             new ObjectMapper().writeValue(response.getOutputStream(), token);
         }
-        filterChain.doFilter(request,response);
     }
 
     @Override

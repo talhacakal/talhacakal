@@ -1,5 +1,6 @@
 package main.Model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
 import main.User.User;
@@ -26,7 +27,7 @@ public class Entry {
     private String eid;
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "uuid", referencedColumnName = "uuid")
-    @NonNull
+    @JsonIgnore
     private User uid;
     @NonNull
     String content;
