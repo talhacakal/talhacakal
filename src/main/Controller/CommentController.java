@@ -1,20 +1,15 @@
 package main.Controller;
 
+import main.DTO.CommentDTO;
 import main.Model.Comment;
-import main.Model.Entry;
-import main.User.User;
 import main.Repository.CommentRepository;
-import main.Repository.EntryRepository;
-import main.User.UserRepository;
+import main.Service.Abstract.CommentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.parameters.P;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.server.ResponseStatusException;
 
-import java.util.List;
 import java.util.Optional;
 
 @RestController
@@ -24,56 +19,32 @@ public class CommentController {
     @Autowired
     private CommentRepository commentRepository;
     @Autowired
-    private EntryRepository entryRepository;
-    @Autowired
-    private UserRepository userRepository;
-
-    @GetMapping("/all")
-    public List<Comment> comments() {
-        return this.commentRepository.findAll();
-    }
+    private CommentService commentService;
 
     @GetMapping("/getComments/{eid}")
-    public List<Comment> entryComments(@PathVariable String eid) {
-        return this.commentRepository.findByEid_Eid(eid);
+    public ResponseEntity entryComments(@PathVariable String eid) {
+        return this.commentService.entryComments(eid);
     }
 
-    @PostMapping("/auth/{eid}")
-    public Object toComment(@PathVariable String eid, @RequestBody Comment userComment, Authentication authentication) {
-        Optional<Entry> optionalEntry = this.entryRepository.findByEid(eid);
-        Optional<User> optionalUser = this.userRepository.findByEmail(authentication.getName());
-        if (optionalEntry.isEmpty())
-            return new ResponseStatusException(HttpStatus.NOT_FOUND, "Not Found");
-
-        if (!optionalEntry.get().isOpenFComment()) new RuntimeException("Close to comment!");
-
-        Comment comment = Comment.builder()
-                .content(userComment.getContent())
-                .uid(optionalUser.get())
-                .eid(optionalEntry.get()).build();
-//        comment.setContent(userComment.getContent());
-//        comment.setUid(optionalUser.get());
-//        comment.setEid(optionalEntry.get());
-        return this.commentRepository.save(comment);
+    @PostMapping("/auth")
+    public ResponseEntity toComment(Authentication authentication, @RequestBody CommentDTO userComment) {
+        return this.commentService.toComment(authentication, userComment);
     }
 
     @PutMapping("/auth")
-    @PreAuthorize(" hasAnyRole('ROLE_ADMIN') || authentication.name == @commentRepository.findByCid(#cid).get().getUid().getEmail()")
-    public Object updateComment(@RequestParam String cid, @RequestParam String content) {
-        Optional<Comment> optionalComment = this.commentRepository.findByCid(cid);
-        optionalComment.get().setContent(content);
+    public ResponseEntity updateComment(@RequestBody CommentDTO userComment) {
+        Optional<Comment> optionalComment = this.commentRepository.findByCid(userComment.getCid());
+        if (optionalComment.isEmpty())
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Comment not found!");
 
-        return this.commentRepository.save(optionalComment.get());
+        return this.commentService.updateComment(userComment, optionalComment.get());
     }
 
     @DeleteMapping("/auth")
-    @PreAuthorize(" hasAnyRole('ROLE_ADMIN') || authentication.name == @commentRepository.findByCid(#cid).get().getUid().getEmail()")
-    public Object deleteComment(@RequestParam String cid) {
+    public ResponseEntity deleteComment(@RequestParam String cid) {
         Optional<Comment> optionalComment = this.commentRepository.findByCid(cid);
-        optionalComment.get().setUid(null);
-        optionalComment.get().setEid(null);
-        this.commentRepository.delete(optionalComment.get());
-        return true;
+        if (optionalComment.isEmpty())
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+        return this.commentService.deleteComment(optionalComment.get());
     }
-
 }

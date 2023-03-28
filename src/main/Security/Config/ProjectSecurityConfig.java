@@ -31,7 +31,7 @@ public class ProjectSecurityConfig {
                 .authorizeHttpRequests()
                 .requestMatchers(GET,"/api/entry/**","/api/comment/**","/api/profile/**").permitAll()
                 .requestMatchers("/api/comment/auth/**", "/api/entry/auth/**","/api/auth/**","/api/profile/**").hasAnyRole("USER")
-                .requestMatchers("/api/role/**","/api/authorization/**").hasRole("ADMIN")
+                .requestMatchers("/api/admin/**").hasRole("ADMIN")
                 .requestMatchers("/register","/user").permitAll()
                 .and().httpBasic();
         return http.build();

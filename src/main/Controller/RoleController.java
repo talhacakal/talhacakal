@@ -1,45 +1,34 @@
 package main.Controller;
 
-import main.Model.Role;
-import main.Repository.RoleRepository;
+import main.DTO.RoleDTO;
+import main.Service.Abstract.RoleService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.server.ResponseStatusException;
-
-import java.util.List;
-import java.util.Optional;
 
 @RestController
-@RequestMapping("/api/role")
+@RequestMapping("/api/admin/role")
 public class RoleController {
 
     @Autowired
-    private RoleRepository roleRepository;
+    private RoleService roleService;
 
-    @GetMapping("/all")
-    public List<Role> getAll() {
-        return this.roleRepository.findAll();
+    @GetMapping("")
+    public ResponseEntity getAll() {
+        return this.roleService.getAll();
     }
-//
-//    @GetMapping("")
-//    public Role getRole(@RequestParam String roleName) {
-//        return this.roleRepository.findByRole(roleName)
-//                .orElseThrow(() -> new RuntimeException("Role Not Found"));
-//    }
-
     @PostMapping("")
-    public Role saveRole(@RequestParam String roleName) {
-        return this.roleRepository.save(new Role(roleName));
+    public ResponseEntity saveRole(@RequestParam String roleName) {
+        return this.roleService.saveRole(roleName);
     }
 
     @PutMapping("")
-    public Object updateRole(@RequestBody Role user) {
-        Optional<Role> optionalRole = this.roleRepository.findById(user.getId());
-        if (optionalRole.isEmpty()) return new ResponseStatusException(HttpStatus.NOT_FOUND, "Role Not Found");
-        optionalRole.get().setRole(user.getRole());
-        return this.roleRepository.save(optionalRole.get());
+    public ResponseEntity updateRole(@RequestBody RoleDTO user) {
+        return this.roleService.updateRole(user);
     }
 
-
+    @DeleteMapping("")
+    public ResponseEntity deleteRole(@RequestParam String roleName) {
+        return this.roleService.deleteRole(roleName);
+    }
 }

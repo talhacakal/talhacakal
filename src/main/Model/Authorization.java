@@ -1,5 +1,6 @@
 package main.Model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
 import main.User.User;
@@ -24,6 +25,7 @@ public class Authorization {
     @OneToOne(cascade = CascadeType.MERGE)
     @JoinColumn(name = "uuid", referencedColumnName = "uuid", nullable = false, unique = true)
     @NonNull
+    @JsonIgnore
     private User uuid;
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(

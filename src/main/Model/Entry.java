@@ -16,6 +16,7 @@ import java.util.UUID;
 @NoArgsConstructor
 @AllArgsConstructor
 @RequiredArgsConstructor
+@Builder
 @Entity
 @Table(name = "entry")
 public class Entry {
@@ -30,7 +31,7 @@ public class Entry {
     @JsonIgnore
     private User uid;
     @NonNull
-    String content;
+    private String content;
     @OneToMany(mappedBy = "eid")
     private List<Comment> comments;
     private boolean openFComment;

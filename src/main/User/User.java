@@ -1,6 +1,7 @@
 package main.User;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Email;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
@@ -23,6 +24,7 @@ public class User {
     private String uuid;
     @Column(unique = true)
     @NonNull
+    @Email
     private String email;
     @Column(name = "create_date")
     @CreationTimestamp
@@ -36,17 +38,3 @@ public class User {
         setUuid(String.valueOf(UUID.randomUUID()));
     }
 }
-
-
-
-
-
-
-
-
-//    @ManyToMany(fetch = FetchType.EAGER)
-//    @JoinTable(
-//            name = "user_roles",
-//            joinColumns = @JoinColumn(name = "uid", referencedColumnName = "uid"),
-//            inverseJoinColumns = @JoinColumn(name = "rid", referencedColumnName = "rid"))
-//    private Set<Role> roles = new HashSet<>();
