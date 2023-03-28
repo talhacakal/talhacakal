@@ -12,9 +12,9 @@ import java.util.UUID;
 
 @Getter
 @Setter
-@NoArgsConstructor
 @AllArgsConstructor
 @RequiredArgsConstructor
+@Builder
 @Entity
 @Table(name = "comment")
 public class Comment {
@@ -26,11 +26,9 @@ public class Comment {
     private String cid;
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "uuid", referencedColumnName = "uuid")
-    @NonNull
     private User uid;
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "eid", referencedColumnName = "eid")
-    @NonNull
     @JsonIgnore
     private Entry eid;
     private String content;
@@ -45,4 +43,6 @@ public class Comment {
     public void prePersist() {
         setCid(UUID.randomUUID().toString());
     }
+
+
 }

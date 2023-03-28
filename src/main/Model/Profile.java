@@ -1,5 +1,6 @@
 package main.Model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
 import main.User.User;
@@ -21,7 +22,7 @@ public class Profile {
     private Long id;
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "uuid", referencedColumnName = "uuid", nullable = false)
-    @NonNull
+    @JsonIgnore
     private User uuid;
     @NonNull
     private String name;

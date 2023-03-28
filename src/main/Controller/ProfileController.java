@@ -6,6 +6,9 @@ import main.Repository.ProfileRepository;
 import main.User.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
@@ -21,33 +24,29 @@ public class ProfileController {
     @Autowired
     private UserRepository userRepository;
 
-    @GetMapping("/all")
-    public List<Profile> getAll() {
-        return this.profileRepository.findAll();
-    }
-
-    @GetMapping("/{uuid}")
-    public Profile getProfile(@PathVariable String uuid) {
-        return this.profileRepository.findByUuid_Uuid(uuid)
+    @GetMapping("/{email}")
+    public Profile getProfile(@PathVariable String email) {
+        return this.profileRepository.findByUuid_Email(email)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "User Not Found"));
     }
 
-    @PostMapping("/{uuid}")
-    public Object createProfile(@PathVariable String uuid, @RequestBody Profile user) {
-        Optional<User> optionalUser = this.userRepository.findByUuid(uuid);
-        if (optionalUser.isEmpty()) return new ResponseStatusException(HttpStatus.NOT_FOUND, "User Not Found");
-
+    @PostMapping("")
+    public Object createProfile(Authentication authentication, @RequestBody Profile user) {
+        Optional<User> optionalUser = this.userRepository.findByEmail(authentication.getName());
+        if (!this.profileRepository.findByUuid_Email(authentication.getName()).isEmpty()){
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Already exist!");
+        }
         user.setUuid(optionalUser.get());
         return this.profileRepository.save(user);
     }
 
-    @PutMapping("/{uuid}")
-    public Object updateProfile(@RequestBody Profile user) {
-        Optional<User> optionalUser = this.userRepository.findByUuid(user.getUuid().getUuid());
-        Optional<Profile> optionalProfile = this.profileRepository.findById(user.getId());
+    @PutMapping("")
+    public Object updateProfile(Authentication authentication, @RequestBody Profile user) {
+        Optional<Profile> optionalProfile = this.profileRepository.findByUuid_Email(authentication.getName());
 
-        if (optionalUser.isEmpty() || optionalProfile.isEmpty())
-            return new ResponseStatusException(HttpStatus.NOT_FOUND, "User Not Found");
+        if (optionalProfile.isEmpty()){
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Create profile!");
+        }
 
         optionalProfile.get().setName(user.getName());
         optionalProfile.get().setLastName(user.getLastName());

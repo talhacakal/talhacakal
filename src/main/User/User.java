@@ -24,8 +24,6 @@ public class User {
     @Column(unique = true)
     @NonNull
     private String email;
-    @NonNull
-    private String properties;
     @Column(name = "create_date")
     @CreationTimestamp
     private LocalDateTime createDate;

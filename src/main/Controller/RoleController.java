@@ -21,12 +21,12 @@ public class RoleController {
     public List<Role> getAll() {
         return this.roleRepository.findAll();
     }
-
-    @GetMapping("")
-    public Role getRole(@RequestParam String roleName) {
-        return this.roleRepository.findByRole(roleName)
-                .orElseThrow(() -> new RuntimeException("Role Not Found"));
-    }
+//
+//    @GetMapping("")
+//    public Role getRole(@RequestParam String roleName) {
+//        return this.roleRepository.findByRole(roleName)
+//                .orElseThrow(() -> new RuntimeException("Role Not Found"));
+//    }
 
     @PostMapping("")
     public Role saveRole(@RequestParam String roleName) {
@@ -34,13 +34,11 @@ public class RoleController {
     }
 
     @PutMapping("")
-    public Object updateRole(@RequestBody Role user){
+    public Object updateRole(@RequestBody Role user) {
         Optional<Role> optionalRole = this.roleRepository.findById(user.getId());
-
         if (optionalRole.isEmpty()) return new ResponseStatusException(HttpStatus.NOT_FOUND, "Role Not Found");
-
-         optionalRole.get().setRole(user.getRole());
-         return this.roleRepository.save(optionalRole.get());
+        optionalRole.get().setRole(user.getRole());
+        return this.roleRepository.save(optionalRole.get());
     }
 
 
