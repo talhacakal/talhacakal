@@ -2,19 +2,15 @@ package main.Controller;
 
 import main.DTO.EntryDTO;
 import main.Model.Entry;
+import main.Repository.EntryRepository;
 import main.Service.Abstract.EntryService;
 import main.User.User;
-import main.Repository.EntryRepository;
 import main.User.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PostAuthorize;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.parameters.P;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
@@ -84,5 +80,4 @@ public class EntryController {
             return new ResponseStatusException(HttpStatus.NOT_FOUND, "Not Found");
         return this.entryService.deleteEntry(optionalEntry.get());
     }
-
 }

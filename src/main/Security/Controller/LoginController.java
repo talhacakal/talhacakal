@@ -47,7 +47,6 @@ public class LoginController {
         this.authenticationRepository.save(authentication);
         this.authorizationRepository.save(authorization);
 
-        return ResponseEntity.ok(createdUser);
+        return ResponseEntity.status(HttpStatus.OK).build();
     }
-
 }

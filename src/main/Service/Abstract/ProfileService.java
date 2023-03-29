@@ -2,6 +2,7 @@ package main.Service.Abstract;
 
 import main.DTO.ProfileDTO;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 
 public interface ProfileService {
 
@@ -9,6 +10,7 @@ public interface ProfileService {
 
     ResponseEntity createProfile(String email, ProfileDTO userProfile);
 
+    @PreAuthorize("authentication.name == #email")
     ResponseEntity updateProfile(String email, ProfileDTO userProfile);
 
 }

@@ -59,6 +59,7 @@ public class CommentManager implements CommentService {
     @Override
     public ResponseEntity deleteComment(Comment comment) {
         comment.setEid(null);
+        comment.setUid(null);
         this.commentRepository.delete(comment);
         return ResponseEntity.status(HttpStatus.OK).build();
     }
