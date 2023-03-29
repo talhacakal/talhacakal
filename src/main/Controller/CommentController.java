@@ -20,17 +20,14 @@ public class CommentController {
     private CommentRepository commentRepository;
     @Autowired
     private CommentService commentService;
-
     @GetMapping("/getComments/{eid}")
     public ResponseEntity entryComments(@PathVariable String eid) {
         return this.commentService.entryComments(eid);
     }
-
     @PostMapping("/auth")
     public ResponseEntity toComment(Authentication authentication, @RequestBody CommentDTO userComment) {
         return this.commentService.toComment(authentication, userComment);
     }
-
     @PutMapping("/auth")
     public ResponseEntity updateComment(@RequestBody CommentDTO userComment) {
         Optional<Comment> optionalComment = this.commentRepository.findByCid(userComment.getCid());
@@ -39,7 +36,6 @@ public class CommentController {
 
         return this.commentService.updateComment(userComment, optionalComment.get());
     }
-
     @DeleteMapping("/auth")
     public ResponseEntity deleteComment(@RequestParam String cid) {
         Optional<Comment> optionalComment = this.commentRepository.findByCid(cid);

@@ -26,6 +26,7 @@ public class Comment {
     private String cid;
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "uuid", referencedColumnName = "uuid")
+    @JsonIgnore
     private User uid;
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "eid", referencedColumnName = "eid")
