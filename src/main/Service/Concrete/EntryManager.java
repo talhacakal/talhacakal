@@ -1,6 +1,6 @@
 package main.Service.Concrete;
 
-import main.DTO.EntryDTO;
+import main.Model.DTO.EntryDTO;
 import main.Model.Comment;
 import main.Model.Entry;
 import main.Repository.CommentRepository;
@@ -9,7 +9,6 @@ import main.Service.Abstract.EntryService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -34,7 +33,6 @@ public class EntryManager implements EntryService {
         this.entryRepository.save(entry);
         return ResponseEntity.status(HttpStatus.OK).build();
     }
-
     @Override
     public Object openComment(Entry entry) {
         entry.setOpenFComment(true);

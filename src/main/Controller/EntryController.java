@@ -1,11 +1,11 @@
 package main.Controller;
 
-import main.DTO.EntryDTO;
+import main.Model.DTO.EntryDTO;
 import main.Model.Entry;
 import main.Repository.EntryRepository;
 import main.Service.Abstract.EntryService;
-import main.User.User;
-import main.User.UserRepository;
+import main.Security.User.User;
+import main.Security.User.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -33,12 +33,10 @@ public class EntryController {
         if (optionalEntry.isPresent()) return optionalEntry.get();
         return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
     }
-
     @GetMapping("/getUserEntry")
     public List<Entry> getUserEntry(@RequestParam String email) {
         return this.entryRepository.findByUid_Email(email);
     }
-
     @PostMapping("/auth")
     public Object saveEntry(Authentication authentication, @RequestBody EntryDTO entrydto) {
         Optional<User> optionalUser = this.userRepository.findByEmail(authentication.getName());
@@ -48,7 +46,6 @@ public class EntryController {
                 .openFComment(entrydto.isOpenFComment()).build();
         return ResponseEntity.ok(this.entryRepository.save(entry));
     }
-
     @PutMapping("/auth")
     public Object updateEntry(@RequestBody EntryDTO entrydto) {
         Optional<Entry> optionalEntry = this.entryRepository.findByEid(entrydto.getEid());
@@ -56,7 +53,6 @@ public class EntryController {
             return new ResponseStatusException(HttpStatus.NOT_FOUND, "Not Found");
         return this.entryService.updateEntry(entrydto, optionalEntry.get());
     }
-
     @PutMapping("/auth/closeComment/{eid}")
     public Object closeComment(@PathVariable String eid) {
         Optional<Entry> optionalEntry = this.entryRepository.findByEid(eid);
@@ -64,7 +60,6 @@ public class EntryController {
             return new ResponseStatusException(HttpStatus.NOT_FOUND, "Not Found");
         return this.entryService.closeComment(optionalEntry.get());
     }
-
     @PutMapping("/auth/openComment/{eid}")
     public Object openComment(@PathVariable String eid) {
         Optional<Entry> optionalEntry = this.entryRepository.findByEid(eid);
@@ -72,7 +67,6 @@ public class EntryController {
             return new ResponseStatusException(HttpStatus.NOT_FOUND, "Not Found");
         return this.entryService.openComment(optionalEntry.get());
     }
-
     @DeleteMapping("/auth/{eid}")
     public Object deleteEntry(@PathVariable String eid) {
         Optional<Entry> optionalEntry = this.entryRepository.findByEid(eid);

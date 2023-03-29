@@ -13,9 +13,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.authority.AuthorityUtils;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import javax.crypto.SecretKey;
@@ -24,7 +24,11 @@ import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Collection;
 
+@Component
 public class JWTTokenValidatorFilter extends OncePerRequestFilter {
+
+    @Autowired
+    private AuthorizationRepository authorizationRepository;
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
@@ -35,13 +39,11 @@ public class JWTTokenValidatorFilter extends OncePerRequestFilter {
 
                 Claims claims = Jwts.parserBuilder().setSigningKey(key).build().parseClaimsJws(jwt).getBody();
                 String username = String.valueOf(claims.get("username"));
-                String authoritiesString = (String) claims.get("authorities");
+//                String authoritiesString = (String) claims.get("authorities");
 
                 Collection<SimpleGrantedAuthority> authorities = new ArrayList<>();
-                String[] rolesArr = authoritiesString.split(",");
-                for (String role : rolesArr) {
-                    authorities.add(new SimpleGrantedAuthority(role));
-                }
+                this.authorizationRepository.findByUuid_Email(username).get().getRoles()
+                        .forEach(item -> authorities.add(new SimpleGrantedAuthority(item.getRole())));
 
                 Authentication auth = new UsernamePasswordAuthenticationToken(username, null, authorities);
                 SecurityContextHolder.getContext().setAuthentication(auth);
@@ -51,9 +53,8 @@ public class JWTTokenValidatorFilter extends OncePerRequestFilter {
         }
         filterChain.doFilter(request, response);
     }
-
     @Override
     protected boolean shouldNotFilter(HttpServletRequest request) throws ServletException {
-        return request.getServletPath().equals("/user");
+        return request.getServletPath().equals("/login");
     }
 }

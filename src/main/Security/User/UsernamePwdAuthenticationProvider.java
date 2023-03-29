@@ -1,10 +1,10 @@
-package main.User;
+package main.Security.User;
 
 import main.Model.Authorization;
 import main.Repository.AuthenticationRepository;
 import main.Repository.AuthorizationRepository;
-import main.User.User;
-import main.User.UserRepository;
+import main.Security.User.User;
+import main.Security.User.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.BadCredentialsException;

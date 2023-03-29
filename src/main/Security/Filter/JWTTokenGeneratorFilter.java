@@ -29,11 +29,10 @@ public class JWTTokenGeneratorFilter extends OncePerRequestFilter {
             SecretKey key = Keys.hmacShaKeyFor(SecurityConstants.JWT_KEY.getBytes(StandardCharsets.UTF_8));
             String jwt = Jwts.builder()
                     .claim("username", authentication.getName())
-                    .claim("authorities", populateAuthorities(authentication.getAuthorities()))
                     .setIssuedAt(new Date())
                     .setExpiration(new Date((new Date()).getTime() + 30000000))
                     .signWith(key).compact();
-            response.setHeader(SecurityConstants.JWT_HEADER, jwt);
+//            response.setHeader(SecurityConstants.JWT_HEADER, jwt);
 
             Map<String, String> token = new HashMap<>();
             token.put("JWT Token", jwt);
@@ -41,17 +40,8 @@ public class JWTTokenGeneratorFilter extends OncePerRequestFilter {
             new ObjectMapper().writeValue(response.getOutputStream(), token);
         }
     }
-
     @Override
     protected boolean shouldNotFilter(HttpServletRequest request) {
-        return !request.getServletPath().equals("/user");
-    }
-
-    private String populateAuthorities(Collection<? extends GrantedAuthority> collection) {
-        Set<String> authoritiesSet = new HashSet<>();
-        for (GrantedAuthority authority : collection) {
-            authoritiesSet.add(authority.getAuthority());
-        }
-        return String.join(",", authoritiesSet);
+        return !request.getServletPath().equals("/login");
     }
 }

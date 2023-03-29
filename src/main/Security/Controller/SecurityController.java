@@ -7,8 +7,8 @@ import main.Model.Authorization;
 import main.Repository.AuthenticationRepository;
 import main.Repository.AuthorizationRepository;
 import main.Repository.RoleRepository;
-import main.User.User;
-import main.User.UserRepository;
+import main.Security.User.User;
+import main.Security.User.UserRepository;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -19,7 +19,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequiredArgsConstructor
 @Transactional
-public class LoginController {
+public class SecurityController {
 
     private final PasswordEncoder passwordEncoder;
     private final UserRepository userRepository;

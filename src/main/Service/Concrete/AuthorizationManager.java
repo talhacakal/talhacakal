@@ -29,7 +29,6 @@ public class AuthorizationManager implements AuthorizationService {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("User Not Found");
         return ResponseEntity.ok(optionalAuthorization);
     }
-
     @Override
     public ResponseEntity addRole(String email, String roleName) {
         Optional<Authorization> optionalAuthorization = this.authorizationRepository.findByUuid_Email(email);
@@ -39,7 +38,6 @@ public class AuthorizationManager implements AuthorizationService {
         optionalAuthorization.get().getRoles().add(optionalRole.get());
         return ResponseEntity.status(HttpStatus.OK).build();
     }
-
     @Override
     public ResponseEntity deleteRoleUser(String email, String roleName) {
         Optional<Authorization> optionalAuthorization = this.authorizationRepository.findByUuid_Email(email);

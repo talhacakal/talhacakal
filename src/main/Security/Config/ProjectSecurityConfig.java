@@ -2,6 +2,7 @@ package main.Security.Config;
 
 import main.Security.Filter.JWTTokenValidatorFilter;
 import main.Security.Filter.JWTTokenGeneratorFilter;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
@@ -21,18 +22,21 @@ import static org.springframework.http.HttpMethod.POST;
 @EnableWebSecurity
 public class ProjectSecurityConfig {
 
+    @Autowired
+    private JWTTokenValidatorFilter jwtTokenValidatorFilter;
+
     @Bean
     SecurityFilterChain defaultSecurityFilterChain(HttpSecurity http) throws Exception{
         http
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
                 .csrf().disable()
                 .addFilterAfter(new JWTTokenGeneratorFilter(), BasicAuthenticationFilter.class)
-                .addFilterAfter(new JWTTokenValidatorFilter(), BasicAuthenticationFilter.class)
+                .addFilterAfter(jwtTokenValidatorFilter, BasicAuthenticationFilter.class)
                 .authorizeHttpRequests()
                 .requestMatchers(GET,"/api/entry/**","/api/comment/**","/api/profile/**").permitAll()
-                .requestMatchers("/api/comment/auth/**", "/api/entry/auth/**","/api/auth/**","/api/profile/**").hasAnyRole("USER")
-                .requestMatchers("/api/admin/**").hasRole("ADMIN")
-                .requestMatchers("/register","/user").permitAll()
+                .requestMatchers("/auth/**","/api/profile/**").hasAnyRole("USER","DEV")
+                .requestMatchers("/api/dev/**").hasRole("DEV")
+                .requestMatchers("/register","/login").permitAll()
                 .and().httpBasic();
         return http.build();
     }
@@ -41,5 +45,4 @@ public class ProjectSecurityConfig {
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
-
 }

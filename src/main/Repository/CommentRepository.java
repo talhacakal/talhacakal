@@ -8,11 +8,5 @@ import java.util.Optional;
 
 public interface CommentRepository extends JpaRepository<Comment, Long> {
     List<Comment> findByEid_Eid(String eid);
-
     Optional<Comment> findByCid(String cid);
-
-
-
-
-
 }
