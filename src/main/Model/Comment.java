@@ -3,7 +3,7 @@ package main.Model;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
-import main.User.User;
+import main.Security.User.User;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
@@ -44,6 +44,4 @@ public class Comment {
     public void prePersist() {
         setCid(UUID.randomUUID().toString());
     }
-
-
 }

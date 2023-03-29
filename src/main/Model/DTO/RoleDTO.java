@@ -1,4 +1,4 @@
-package main.DTO;
+package main.Model.DTO;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -7,13 +7,10 @@ import lombok.Setter;
 
 @Getter
 @Setter
-@AllArgsConstructor
 @NoArgsConstructor
-public class CommentDTO {
+@AllArgsConstructor
+public class RoleDTO {
 
-    private String cid;
-    private String eid;
-    private String content;
-
-
+    private Long id;
+    private String role;
 }

@@ -3,7 +3,7 @@ package main.Model;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
-import main.User.User;
+import main.Security.User.User;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
@@ -39,13 +39,4 @@ public class Authorization {
     @Column(name = "last_update_date")
     @UpdateTimestamp
     private LocalDateTime lastUpdateDate;
-
-    public void addRole(String role){
-        getRoles().add(new Role(role));
-    }
-
-    public Authorization(@NonNull User uuid, Set<Role> roles) {
-        this.uuid = uuid;
-        this.roles = new HashSet<>();
-    }
 }

@@ -1,6 +1,6 @@
 package main.Controller;
 
-import main.DTO.ProfileDTO;
+import main.Model.DTO.ProfileDTO;
 import main.Service.Abstract.ProfileService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -18,12 +18,14 @@ public class ProfileController {
     public ResponseEntity getProfile(@PathVariable String email) {
         return this.profileService.getProfile(email);
     }
-
+    @GetMapping("/entries/{email}")
+    public ResponseEntity entries(@PathVariable String email) {
+        return this.profileService.entries(email);
+    }
     @PostMapping("")
     public ResponseEntity createProfile(Authentication authentication, @RequestBody ProfileDTO user) {
         return this.profileService.createProfile(authentication.getName(), user);
     }
-
     @PutMapping("")
     public Object updateProfile(Authentication authentication, @RequestBody ProfileDTO user) {
         return this.profileService.updateProfile(authentication.getName(), user);

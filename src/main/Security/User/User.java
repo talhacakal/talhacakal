@@ -1,4 +1,4 @@
-package main.User;
+package main.Security.User;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;

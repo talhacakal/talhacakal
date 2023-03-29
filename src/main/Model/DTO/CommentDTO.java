@@ -1,4 +1,4 @@
-package main.DTO;
+package main.Model.DTO;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -9,10 +9,9 @@ import lombok.Setter;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class EntryDTO {
+public class CommentDTO {
 
+    private String cid;
     private String eid;
     private String content;
-    private boolean openFComment;
-
 }

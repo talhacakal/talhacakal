@@ -10,16 +10,5 @@ import java.util.Optional;
 
 public interface EntryRepository extends JpaRepository<Entry, Long> {
     Optional<Entry> findByEid(String eid);
-
     List<Entry> findByUid_Email(String email);
-
-
-
-
-
-
-
-
-
-
 }

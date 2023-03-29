@@ -7,10 +7,5 @@ import java.util.Optional;
 
 public interface AuthorizationRepository extends JpaRepository<Authorization, Long> {
     Optional<Authorization> findByUuid_Uuid(String uuid);
-
     Optional<Authorization> findByUuid_Email(String email);
-
-
-
-
 }

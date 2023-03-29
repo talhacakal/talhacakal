@@ -1,13 +1,13 @@
 package main.Controller;
 
-import main.DTO.RoleDTO;
+import main.Model.DTO.RoleDTO;
 import main.Service.Abstract.RoleService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/api/admin/role")
+@RequestMapping("/api/dev/role")
 public class RoleController {
 
     @Autowired
@@ -21,12 +21,10 @@ public class RoleController {
     public ResponseEntity saveRole(@RequestParam String roleName) {
         return this.roleService.saveRole(roleName);
     }
-
     @PutMapping("")
     public ResponseEntity updateRole(@RequestBody RoleDTO user) {
         return this.roleService.updateRole(user);
     }
-
     @DeleteMapping("")
     public ResponseEntity deleteRole(@RequestParam String roleName) {
         return this.roleService.deleteRole(roleName);

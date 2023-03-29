@@ -1,6 +1,6 @@
 package main.Controller;
 
-import main.DTO.CommentDTO;
+import main.Model.DTO.CommentDTO;
 import main.Model.Comment;
 import main.Repository.CommentRepository;
 import main.Service.Abstract.CommentService;
@@ -20,6 +20,7 @@ public class CommentController {
     private CommentRepository commentRepository;
     @Autowired
     private CommentService commentService;
+
     @GetMapping("/getComments/{eid}")
     public ResponseEntity entryComments(@PathVariable String eid) {
         return this.commentService.entryComments(eid);

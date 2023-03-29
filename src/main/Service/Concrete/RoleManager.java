@@ -1,6 +1,6 @@
 package main.Service.Concrete;
 
-import main.DTO.RoleDTO;
+import main.Model.DTO.RoleDTO;
 import main.Model.Role;
 import main.Repository.RoleRepository;
 import main.Service.Abstract.RoleService;
@@ -16,16 +16,15 @@ public class RoleManager implements RoleService {
 
     @Autowired
     private RoleRepository roleRepository;
+
     @Override
     public ResponseEntity getAll() {
         return ResponseEntity.ok(this.roleRepository.findAll());
     }
-
     @Override
     public ResponseEntity saveRole(String roleName) {
         return ResponseEntity.ok(this.roleRepository.save(new Role(roleName)));
     }
-
     @Override
     public ResponseEntity updateRole(RoleDTO user) {
         Optional<Role> optionalRole = this.roleRepository.findById(user.getId());
@@ -33,7 +32,6 @@ public class RoleManager implements RoleService {
         optionalRole.get().setRole(user.getRole());
         return ResponseEntity.ok(this.roleRepository.save(optionalRole.get()));
     }
-
     @Override
     public ResponseEntity deleteRole(String roleName) {
         Optional<Role> optionalRole = this.roleRepository.findByRole(roleName);
