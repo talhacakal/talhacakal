@@ -1,5 +1,0 @@
-CREATE DATABASE forum_app;
-
-CREATE USER 'forumappdev'@'%' IDENTIFIED BY '123456';
-
-GRANT ALL PRIVILEGES ON *.* TO 'forumappdev'@'%' WITH GRANT OPTION;
